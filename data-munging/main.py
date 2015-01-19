@@ -1,27 +1,28 @@
 import re
 import os.path
-class Kata04:
+class WeatherSelector:
+	FILE_NAME='weather.dat'
+	def find_smallest_spread(self):
+		assert os.path.isfile(self.FILE_NAME), "File %s " % file_name
+		def clear_none(n): 
+			return n
+		def create_item(l): 
+			return WeatherEntry.from_weather_file_line(l)
+		def get_list():
+			f = open(self.FILE_NAME, "r")
+			try:
+				return filter(clear_none,
+					map(create_item, f.readlines()))
+			finally:
+				f.close()
+		return self._find_smallest_spread(get_list())
 
-	def find_smallest_spread(self, weatherEntries):
+	def _find_smallest_spread(self, weatherEntries):
+		assert weatherEntries
 		def spread(item):
 			return item.max - item.min
 		entriesBySpread = sorted(weatherEntries, key=spread)
 		return entriesBySpread[0].id
-	def find_smallest_spread_in_file(self, file_name):
-		result = []
-		assert os.path.isfile(file_name), "Invalid file %s " % file_name
-		f = open(file_name, "r")
-		lines = f.readlines()
-		for l in lines[2:]:
-			print "the line"
-			print l
-			entry = WeatherEntry.from_weather_file_line(l)
-			if entry:
-				result.append(entry)
-
-		f.close()
-		return self.find_smallest_spread(result)
-
 class WeatherEntry:
 	def __init__(self, id, min, max):
 		self.min = min
