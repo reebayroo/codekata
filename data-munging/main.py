@@ -25,9 +25,9 @@ class WeatherSelector:
 		return entriesBySpread[0].id
 class WeatherEntry:
 	def __init__(self, id, min, max):
-		self.min = min
-		self.max = max
-		self.id = id
+		self.min = float(min)
+		self.max = float(max)
+		self.id = str(id)
 	def __unicode__(self):
 		return "id %s min %s max %s" % (self.id, self.min, self.max)
 	def __str__(self):
@@ -35,12 +35,12 @@ class WeatherEntry:
 	@staticmethod
 	def from_weather_file_line(line):
 		assert line, "Line is required. Got %s " % line
-		def to_int(index):
+		def to_float(index):
 			assert columns, "Columns should be a valid array"
-			return int(re.sub(r"\D", "", columns[index]))
+			return float(re.sub(r"[^\d.]+", "", columns[index]))
 		columns = line.split()
 		try:
-			return WeatherEntry(id=to_int(0), min=to_int(2), max=to_int(1))
+			return WeatherEntry(id=columns[0], min=to_float(2), max=to_float(1))
 		except:
 			return None
 	def __eq__(self, other):
