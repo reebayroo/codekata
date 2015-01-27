@@ -9,10 +9,6 @@ def parse_number(text):
 # -- REGISTER TYPE-CONVERTER: With behave
 register_type(Number=parse_number)
 
-def before_scenario(context, scenario):
-	context.entries = []
-
-
 @given(u'The Weather Entry: id=1, min=10, max=20')
 def step_impl(context):
 	context.entries = [ WeatherEntry(id=1, min=10, max=20) ]
