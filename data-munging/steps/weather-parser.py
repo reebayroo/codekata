@@ -1,13 +1,39 @@
+from main import *
 
-from behave import *
+from behave import register_type, given
+import parse
 
-@given('we have behave installed')
-def step_impl(context):
-	pass
-@when('we implement a test')
-def step_impl(context):
-	assert True is not False
+@parse.with_pattern(r"\d+")
+def parse_number(text):
+	return float(text)
 
-@then('behave will test it for us!')
+# -- REGISTER TYPE-CONVERTER: With behave
+register_type(Number=parse_number)
+
+
+
+@given(u'The line: "{line}"')
+def step_impl(context,line):
+	assert line
+	context.parsing_line = line
+
+@when(u'we parse the line')
 def step_impl(context):
-	assert context.failed is False
+	assert context.parsing_line
+	context.parsed_content = WeatherEntry.from_weather_file_line(context.parsing_line)
+
+@then(u'there will be no parsed WeatherEntry')
+def step_impl(context):
+    	assert context.parsed_content is None
+
+
+@given(u'an empty line')
+def step_impl(context):
+	context.parsing_line = "                    "
+
+@then(u'there will be a parsed weatherEntry with max temp "{maxTemp:Number}" min temp "{minTemp:Number}" and id "{expectedId}"')
+def step_impl(context, maxTemp, minTemp, expectedId):
+	assert context.parsed_content is not None
+	assert context.parsed_content.max == maxTemp
+	assert context.parsed_content.min == minTemp
+	assert context.parsed_content.id == expectedId, "expecting %s and got %s" % (context.parsed_content.id, expectedId)
