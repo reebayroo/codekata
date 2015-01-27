@@ -3,7 +3,7 @@ from main import *
 from behave import register_type, given
 import parse
 
-@parse.with_pattern(r"\d+")
+@parse.with_pattern(r"\d+(\.\d+)?")
 def parse_number(text):
 	return float(text)
 
