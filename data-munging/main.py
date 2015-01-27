@@ -2,7 +2,7 @@ import re
 import os.path
 class WeatherSelector:
 	FILE_NAME='weather.dat'
-	def find_smallest_spread(self):
+	def find_smallest_spread_from_file(self):
 		assert os.path.isfile(self.FILE_NAME), "File %s " % file_name
 		def clear_none(n): 
 			return n
@@ -17,9 +17,12 @@ class WeatherSelector:
 				f.close()
 		return self._find_smallest_spread(get_list())
 
-	def _find_smallest_spread(self, weatherEntries):
+class WeatherSelector:
+	@staticmethod
+	def find_smallest_spread(weatherEntries):
 		assert weatherEntries
 		def spread(item):
+			assert isinstance(item, WeatherEntry), "got %s" % item
 			return item.max - item.min
 		entriesBySpread = sorted(weatherEntries, key=spread)
 		return entriesBySpread[0].id
@@ -32,8 +35,13 @@ class WeatherEntry:
 		return "id %s min %s max %s" % (self.id, self.min, self.max)
 	def __str__(self):
 		return unicode(self)
+	def __eq__(self, other):
+		return other.min == self.min and \
+			other.max == self.max and \
+			other.id == self.id
+class WeatherEntryParser:
 	@staticmethod
-	def from_weather_file_line(line):
+	def parse_line(line):
 		assert line, "Line is required. Got %s " % line
 		def to_float(index):
 			assert columns, "Columns should be a valid array"
@@ -43,8 +51,4 @@ class WeatherEntry:
 			return WeatherEntry(id=columns[0], min=to_float(2), max=to_float(1))
 		except:
 			return None
-	def __eq__(self, other):
-		return other.min == self.min and \
-			other.max == self.max and \
-			other.id == self.id
-
+	

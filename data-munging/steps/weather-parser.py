@@ -20,7 +20,7 @@ def step_impl(context,line):
 @when(u'we parse the line')
 def step_impl(context):
 	assert context.parsing_line
-	context.parsed_content = WeatherEntry.from_weather_file_line(context.parsing_line)
+	context.parsed_content = WeatherEntryParser.parse_line(context.parsing_line)
 
 @then(u'there will be no parsed WeatherEntry')
 def step_impl(context):
