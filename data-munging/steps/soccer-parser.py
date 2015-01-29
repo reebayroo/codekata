@@ -1,18 +1,19 @@
-from soccer import *
-from behave import given 
-import parse
-@given(u'a line in the soccer league table: "{soccer_line}"') 
-def step_impl(context, soccer_line):
-	context.parsing_line = soccer_line
+@given(u'The footbal line: "{pline}"')
+def step_impl(context, pline):
+    assert False
 
 @when(u'the soccer parser parses the line')
 def step_impl(context):
-	context.parsed_content = TeamScoreEntryParser.parse(context.line)
+    assert False
 
 @then(u'there will be no TeamScoreEntry')
 def step_impl(context):
-	assert context.parsed_content == None
+    assert False
 
-@then(u'there will be TeamScoreEntry(1, Arsenal, 79, 36)')
+@given(u'The footbal line: What Is wrong here')
 def step_impl(context):
-	assert False
+    assert False
+
+@then(u'There will be TeamScoreEntry(1, arsenal, 79, 36)')
+def step_impl(context):
+    assert False
