@@ -1,4 +1,4 @@
-from main import *
+from weather import *
 
 from behave import register_type, given
 import parse
