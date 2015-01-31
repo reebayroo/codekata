@@ -1,19 +1,18 @@
-@given(u'The footbal line: "{pline}"')
+from soccer import *
+@given(u'The footbal line: {pline}')
 def step_impl(context, pline):
-    assert False
+	context.parsed_line = pline
 
 @when(u'the soccer parser parses the line')
 def step_impl(context):
-    assert False
+	context.parsed_content = TeamEntryParser.parse(context.parsed_line) 
 
 @then(u'there will be no TeamScoreEntry')
 def step_impl(context):
-    assert False
+	    assert context.parsed_content is None
 
-@given(u'The footbal line: What Is wrong here')
-def step_impl(context):
-    assert False
 
-@then(u'There will be TeamScoreEntry(1, arsenal, 79, 36)')
-def step_impl(context):
-    assert False
+@then(u'There will be TeamScoreEntry({ident}, {team}, {favor}, {against})')
+def step_impl(context, ident, team, favor, against):
+	expected = TeamEntry(ident, team, int(favor), int(against))
+	assert context.parsed_content == expected, "Expecting [%s] got [%s] instead" % (expected, context.parsed_content)
