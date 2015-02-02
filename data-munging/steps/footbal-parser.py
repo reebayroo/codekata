@@ -1,4 +1,4 @@
-from soccer import *
+from footbal import *
 @given(u'The footbal line: {pline}')
 def step_impl(context, pline):
 	context.parsed_line = pline

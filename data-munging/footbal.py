@@ -12,8 +12,8 @@ class TeamEntry:
 	def __init__(self, identifier, team, favor, against):
 		self.identifier = identifier
 		self.team = team
-		self.favor = favor
-		self.against = against
+		self.favor = int(favor)
+		self.against = int(against)
 	def __str__(self):
 		return unicode(self)
 	def __unicode__(self):
@@ -27,3 +27,12 @@ class TeamEntry:
 			self.team == other.team and 
 			self.favor == other.favor and 
 			self.against == other.against)        
+        
+class TeamSelector:
+    @staticmethod
+    def find_smallest_goal_difference(list_of_teams):
+        def by_difference(item):
+            return item.favor - item.against
+        list_of_teams.sort(key=by_difference) if (list_of_teams) else None
+        return list_of_teams[0] if (list_of_teams) else None
+

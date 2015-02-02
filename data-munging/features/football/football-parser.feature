@@ -7,3 +7,8 @@ Feature: Soccer Data Parser
 		Given The footbal line: 1. arsenal         38    26   9   3    79  -  36    87
 		When The soccer parser parses the line
 		Then There will be TeamScoreEntry(1, arsenal, 79, 36)
+   
+	Scenario: Horizontal line
+		Given The footbal line: ------------------------------------------------------
+		When The soccer parser parses the line
+		Then there will be no TeamScoreEntry
