@@ -32,7 +32,29 @@ class TeamSelector:
     @staticmethod
     def find_smallest_goal_difference(list_of_teams):
         def by_difference(item):
-            return item.favor - item.against
+            return abs(item.favor - item.against)
         list_of_teams.sort(key=by_difference) if (list_of_teams) else None
         return list_of_teams[0] if (list_of_teams) else None
 
+class FootballApp:
+    def __init__(self, file_name):
+        self.file_name = file_name
+
+    @staticmethod
+    def init(file_name):
+        return FootballApp(file_name)
+
+    def display_team_with_least_difference(self):
+        def clear_none(n):
+            return n
+        def create_item(line):
+            return TeamEntryParser.parse(line)
+        def get_list():
+            f = open(self.file_name, "r")
+            try:
+                return filter(clear_none, 
+                        map(create_item, 
+                            f.readlines()))
+            finally:
+                f.close()
+        return TeamSelector.find_smallest_goal_difference(get_list())
