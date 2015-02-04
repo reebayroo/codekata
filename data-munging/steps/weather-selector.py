@@ -22,4 +22,5 @@ def step_impl(context):
 	context.selected = WeatherSelector.find_smallest_spread(context.entries)
 @then(u'the entries with the smallest spread will be: id=second, min=15, max=20')
 def step_impl(context):
-	assert context.selected == "second"
+    expected = WeatherEntry(id="second", min=15, max=20)
+    assert context.selected == expected

@@ -1,31 +1,36 @@
 import re
 import os.path
-class WeatherSelector:
-    FILE_NAME='weather.dat'
-    def find_smallest_spread_from_file(self):
-        assert os.path.isfile(self.FILE_NAME), "File %s " % file_name
+class WeatherApp:
+    def __init__(self, file_name):
+        self.file_name = file_name
+    @staticmethod
+    def init(file_name):
+        return WeatherApp(file_name)
+    
+    def find_entry_with_smallest_spread(self):
+        assert os.path.isfile(self.file_name), "File %s " % self.file_name
         def clear_none(n): 
             return n
         def create_item(l): 
-            return WeatherEntry.from_weather_file_line(l)
+            return WeatherEntryParser.parse_line(l)
         def get_list():
-            f = open(self.FILE_NAME, "r")
+            f = open(self.file_name, "r")
             try:
                 return filter(clear_none,
                         map(create_item, f.readlines()))
             finally:
                 f.close()
-        return self._find_smallest_spread(get_list())
+        return WeatherSelector.find_smallest_spread(get_list())
 
 class WeatherSelector:
     @staticmethod
     def find_smallest_spread(weatherEntries):
         assert weatherEntries
-        def spread(item):
-            assert isinstance(item, WeatherEntry), "got %s" % item
-            return item.max - item.min
-        entriesBySpread = sorted(weatherEntries, key=spread)
-        return entriesBySpread[0].id
+        def spread(item1, item2):
+            def diff(i):
+                return i.max - i.min
+            return item1 if (diff(item1) < diff(item2)) else item2
+        return reduce(spread, weatherEntries)
 
 class WeatherEntry:
     def __init__(self, id, min, max):

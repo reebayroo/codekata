@@ -31,10 +31,11 @@ class TeamEntry:
 class TeamSelector:
     @staticmethod
     def find_smallest_goal_difference(list_of_teams):
-        def by_difference(item):
-            return abs(item.favor - item.against)
-        list_of_teams.sort(key=by_difference) if (list_of_teams) else None
-        return list_of_teams[0] if (list_of_teams) else None
+        def smallest_diff(item1, item2):
+            def diff(item):
+                return abs(item.favor - item.against)
+            return item1 if (diff(item1) < diff(item2)) else item2
+        return reduce(smallest_diff, list_of_teams)
 
 class FootballApp:
     def __init__(self, file_name):
